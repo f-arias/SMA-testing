@@ -1,5 +1,6 @@
 import os
 import cv2
+import csv
 import numpy as np
 from skimage.feature import structure_tensor
 
@@ -36,36 +37,52 @@ def fft_filter_and_threshold(image, percentile=99.9):
 
 def process_single_image_171(image_path, params):
     """
-    Procesa una única imagen según la lógica de la v1.7.1.
+    Procesa una única imagen para el análisis de arquitectura muscular.
+    Esta función es el núcleo del análisis de la versión 1.7.1.
     """
+    # Cargar la imagen en escala de grises
     img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     if img is None:
         print(f"Error al leer la imagen: {image_path}")
         return None, None
 
-    # Reutilizar funciones de análisis_233 requiere que estén en el mismo directorio o en el path de python.
-    # Por simplicidad, copiaremos las funciones necesarias aquí.
+    # --- Pre-procesamiento de la imagen ---
+    # Recorte automático o manual de la imagen
     img_cropped = perform_cropping(img, params["cropping"])
 
+    # Eliminación del fondo y reducción de ruido
     kernel_bg = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (50, 50))
     background = cv2.morphologyEx(img_cropped, cv2.MORPH_OPEN, kernel_bg)
     img_no_bg = cv2.subtract(img_cropped, background)
     img_denoised = cv2.fastNlMeansDenoising(img_no_bg, h=15)
 
+    # Mejora del contraste con CLAHE
     clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(36,36))
     img_clahe = clahe.apply(img_denoised)
 
+    # --- Detección de Aponeurosis ---
+    # Filtrado en el dominio de la frecuencia (FFT) para resaltar estructuras lineales
     img_fft_filtered = fft_filter_and_threshold(img_clahe, percentile=99.9)
+
+    # Detección de bordes con Canny
     edges = cv2.Canny(image=img_fft_filtered, threshold1=50, threshold2=150)
 
+    # Filtrar contornos para mantener solo los largos, que probablemente son aponeurosis
     WFoV = img_cropped.shape[1]
-    minLength = 0.8 * WFoV
+    minLength = 0.3 * WFoV
     contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    mask_long_contours = np.zeros_like(edges)
-    for contour in contours:
-        if cv2.arcLength(contour, closed=False) >= minLength:
-            cv2.drawContours(mask_long_contours, [contour], -1, 255, thickness=cv2.FILLED)
 
+    mask_long_contours = np.zeros_like(edges)
+
+    long_contours = [c for c in contours if cv2.arcLength(c, False) > minLength]
+
+    if len(long_contours) >= 2:
+        cv2.drawContours(mask_long_contours, long_contours, -1, 255, thickness=cv2.FILLED)
+    else:
+        print(f"No se encontraron suficientes contornos largos (se encontraron {len(long_contours)}).")
+        return None, None
+
+    # Trazar las líneas de las aponeurosis superior e inferior
     upper_aponeurosis = find_aponeurosis_line(mask_long_contours, search_from_top=True)
     lower_aponeurosis = find_aponeurosis_line(mask_long_contours, search_from_top=False)
 
@@ -76,9 +93,12 @@ def process_single_image_171(image_path, params):
     upper_points = np.array(upper_aponeurosis)
     lower_points = np.array(lower_aponeurosis)
 
+    # --- Cálculo de Parámetros de Arquitectura Muscular ---
+    # Ángulo de la aponeurosis inferior (beta)
     lower_fit = np.polyfit(lower_points[:, 0], lower_points[:, 1], 1)
     beta = np.rad2deg(np.arctan(lower_fit[0]))
 
+    # Definir la región de interés (ROI) para el análisis de fascículos
     y_min_roi = int(np.max(upper_points[:, 1]))
     y_max_roi = int(np.min(lower_points[:, 1]))
     x_min_roi = int(np.min(lower_points[:, 0]))
@@ -94,15 +114,18 @@ def process_single_image_171(image_path, params):
         print("El ROI para el análisis de fascículos está vacío.")
         return None, None
 
+    # Ángulo de los fascículos (alfa) usando el tensor de estructura
     sigma_orientation = float(params.get("Osigma", 4.0))
     if sigma_orientation == 0: sigma_orientation = 0.1
     Axx, Axy, Ayy = structure_tensor(fascicle_roi, sigma=sigma_orientation, mode='constant')
     orientation_map = np.rad2deg(0.5 * np.arctan2(2 * Axy, Ayy - Axx))
-    orientation_map += 90
+    orientation_map += 90  # Ajuste para la orientación de los fascículos
     alpha = np.nanmean(orientation_map)
 
+    # Ángulo de penación
     pennation_angle = alpha + beta
 
+    # Grosor del músculo
     common_x_min = max(np.min(upper_points[:, 0]), np.min(lower_points[:, 0]))
     common_x_max = min(np.max(upper_points[:, 0]), np.max(lower_points[:, 0]))
     common_x = np.linspace(common_x_min, common_x_max, num=int(common_x_max - common_x_min))
@@ -110,11 +133,13 @@ def process_single_image_171(image_path, params):
     y_interp_lower = np.interp(common_x, lower_points[:, 0], lower_points[:, 1])
     thickness = np.mean(y_interp_lower - y_interp_upper)
 
+    # Longitud del fascículo
     if np.sin(np.deg2rad(pennation_angle)) == 0:
         fascicle_length = float('inf')
     else:
         fascicle_length = thickness / np.sin(np.deg2rad(pennation_angle))
 
+    # --- Preparación de Resultados ---
     results = {
         "thickness": thickness,
         "pennation_angle": pennation_angle,
@@ -123,6 +148,7 @@ def process_single_image_171(image_path, params):
         "aponeurosis_angle_beta": beta,
     }
 
+    # Creación de la máscara de salida
     output_mask = np.zeros_like(img_cropped, dtype=np.uint8)
     cv2.polylines(output_mask, [upper_points.astype(np.int32)], isClosed=False, color=255, thickness=2)
     cv2.polylines(output_mask, [lower_points.astype(np.int32)], isClosed=False, color=255, thickness=2)
@@ -151,7 +177,7 @@ def perform_cropping(image, cropping_type, manual_roi=None):
         width = int(w * 0.98); height = int(h * 0.97)
         return image[Up:Up+height, Le:Le+width]
 
-def find_aponeurosis_line(binary_mask, search_from_top=True, search_height_ratio=0.4):
+def find_aponeurosis_line(binary_mask, search_from_top=True, search_height_ratio=0.5):
     height, width = binary_mask.shape
     mid_x = width // 2
     search_region_y = (0, int(height * search_height_ratio)) if search_from_top else (int(height * (1-search_height_ratio)), height)
@@ -186,3 +212,87 @@ def trace_line(image, start_x, y, direction, search_radius=2):
         else:
             break
     return path
+
+def SMA(input_image_path, output_path, analysis_params=None, csv_output=False, general_config=None):
+    """
+    Función principal para el análisis de arquitectura muscular (SMA).
+
+    Esta función toma una imagen de ultrasonido, realiza el análisis para detectar
+    las aponeurosis y calcula los parámetros de la arquitectura muscular.
+
+    Args:
+        input_image_path (str):
+            Ruta de la imagen de ultrasonido a analizar.
+        output_path (str):
+            Ruta del directorio donde se guardarán los resultados (imagen de máscara y archivo CSV).
+        analysis_params (dict, optional):
+            Diccionario con los parámetros para el análisis. Si no se proporciona,
+            se utilizarán los valores por defecto. Los parámetros posibles son:
+            - 'cropping': 'Automatic' o 'Manual'.
+            - 'Osigma': Valor de sigma para el tensor de estructura.
+            (y otros parámetros de la GUI que se podrían implementar en el futuro).
+            Defaults to None.
+        csv_output (bool, optional):
+            Si es True, se guardará un archivo CSV con los resultados.
+            Defaults to False.
+        general_config (dict, optional):
+            Configuraciones generales. No implementado en esta versión.
+
+    Returns:
+        tuple:
+            - results (dict): Diccionario con los parámetros de arquitectura muscular calculados.
+            - output_mask (numpy.ndarray): Imagen de la máscara con las aponeurosis detectadas.
+    """
+    # Parámetros de análisis por defecto basados en la GUI
+    default_params = {
+        "cropping": "Automatic",
+        "Osigma": "4",
+        # Otros parámetros que podrían ser relevantes en el futuro
+        "Tsigma": 10,
+        "extrapolate_from": "100%",
+        "ROIn": 3,
+        "ROIwidth": 60,
+        "ROIheight": 90,
+        "autThresh": True,
+        "manThresh": 175,
+        "Pa": "max",
+    }
+
+    # Fusionar parámetros de usuario con los de por defecto
+    if analysis_params:
+        default_params.update(analysis_params)
+
+    params = default_params
+
+    # Procesar la imagen
+    results, output_mask = process_single_image_171(input_image_path, params)
+
+    if results and output_mask is not None:
+        # Crear directorio de salida si no existe
+        os.makedirs(output_path, exist_ok=True)
+
+        # Guardar la imagen de la máscara
+        filename, _ = os.path.splitext(os.path.basename(input_image_path))
+        output_image_path = os.path.join(output_path, f"processed_mask_{filename}.png")
+        cv2.imwrite(output_image_path, output_mask)
+        print(f"Máscara procesada guardada en: {output_image_path}")
+
+        # Guardar resultados en CSV si se solicita
+        if csv_output:
+            results["image_name"] = os.path.basename(input_image_path)
+            output_csv_path = os.path.join(output_path, "resultados_171.csv")
+
+            # Escribir el archivo CSV
+            file_exists = os.path.isfile(output_csv_path)
+            with open(output_csv_path, 'a', newline='') as csvfile:
+                fieldnames = results.keys()
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+                if not file_exists:
+                    writer.writeheader()
+                writer.writerow(results)
+            print(f"Resultados guardados en: {output_csv_path}")
+
+        return results, output_mask
+
+    return None, None
