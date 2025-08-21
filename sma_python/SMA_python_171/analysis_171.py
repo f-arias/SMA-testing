@@ -213,7 +213,53 @@ def trace_line(image, start_x, y, direction, search_radius=2):
             break
     return path
 
-def SMA(input_image_path, output_path, analysis_params=None, csv_output=False, general_config=None):
+# --- Diccionarios de Configuración por Defecto ---
+
+# Parámetros de análisis por defecto basados en la GUI de la versión 1.7.1
+_DEFAULT_ANALYSIS_PARAMS = {
+    "cropping": "Automatic",  # 'Automatic' o 'Manual'
+    "Osigma": "4",            # Sigma para el tensor de estructura
+    "Tsigma": 10,             # No utilizado activamente en el código de v1.7.1
+    "extrapolate_from": "100%",# No utilizado activamente en el código de v1.7.1
+    "ROIn": 3,                # No utilizado activamente en el código de v1.7.1
+    "ROIwidth": 60,           # No utilizado activamente en el código de v1.7.1
+    "ROIheight": 90,          # No utilizado activamente en el código de v1.7.1
+    "autThresh": True,        # No utilizado activamente en el código de v1.7.1
+    "manThresh": 175,         # No utilizado activamente en el código de v1.7.1
+    "Pa": "max",              # No utilizado activamente en el código de v1.7.1
+}
+
+# Configuraciones generales por defecto
+_DEFAULT_GENERAL_CONFIG = {
+    "show_prints": True,      # Mostrar mensajes de progreso en la consola
+    "save_csv": True,         # Guardar los resultados en un archivo CSV
+    "output_csv_name": "resultados_171.csv", # Nombre del archivo CSV de salida
+    "save_mask": True         # Guardar la máscara de la imagen procesada
+}
+
+# --- Funciones para Obtener Configuraciones por Defecto ---
+
+def get_default_sma_parameters():
+    """
+    Devuelve una copia del diccionario de parámetros de análisis por defecto.
+
+    Returns:
+        dict: Un diccionario con los parámetros de análisis por defecto.
+    """
+    return _DEFAULT_ANALYSIS_PARAMS.copy()
+
+def get_default_general_config():
+    """
+    Devuelve una copia del diccionario de configuraciones generales por defecto.
+
+    Returns:
+        dict: Un diccionario con las configuraciones generales por defecto.
+    """
+    return _DEFAULT_GENERAL_CONFIG.copy()
+
+# --- Función Principal de Análisis ---
+
+def SMA(input_image_path, output_path, analysis_params=None, general_config=None):
     """
     Función principal para el análisis de arquitectura muscular (SMA).
 
@@ -224,75 +270,68 @@ def SMA(input_image_path, output_path, analysis_params=None, csv_output=False, g
         input_image_path (str):
             Ruta de la imagen de ultrasonido a analizar.
         output_path (str):
-            Ruta del directorio donde se guardarán los resultados (imagen de máscara y archivo CSV).
+            Ruta del directorio donde se guardarán los resultados.
         analysis_params (dict, optional):
-            Diccionario con los parámetros para el análisis. Si no se proporciona,
-            se utilizarán los valores por defecto. Los parámetros posibles son:
-            - 'cropping': 'Automatic' o 'Manual'.
-            - 'Osigma': Valor de sigma para el tensor de estructura.
-            (y otros parámetros de la GUI que se podrían implementar en el futuro).
-            Defaults to None.
-        csv_output (bool, optional):
-            Si es True, se guardará un archivo CSV con los resultados.
-            Defaults to False.
+            Diccionario con los parámetros para el análisis. Si es None,
+            se utilizarán los valores por defecto.
         general_config (dict, optional):
-            Configuraciones generales. No implementado en esta versión.
+            Diccionario con las configuraciones generales. Si es None,
+            se utilizarán los valores por defecto.
 
     Returns:
         tuple:
-            - results (dict): Diccionario con los parámetros de arquitectura muscular calculados.
-            - output_mask (numpy.ndarray): Imagen de la máscara con las aponeurosis detectadas.
+            - results (dict): Diccionario con los parámetros calculados.
+            - output_mask (numpy.ndarray): Máscara con las aponeurosis detectadas.
+            Retorna (None, None) si el análisis falla.
     """
-    # Parámetros de análisis por defecto basados en la GUI
-    default_params = {
-        "cropping": "Automatic",
-        "Osigma": "4",
-        # Otros parámetros que podrían ser relevantes en el futuro
-        "Tsigma": 10,
-        "extrapolate_from": "100%",
-        "ROIn": 3,
-        "ROIwidth": 60,
-        "ROIheight": 90,
-        "autThresh": True,
-        "manThresh": 175,
-        "Pa": "max",
-    }
+    # Fusionar configuraciones de usuario con las de por defecto
+    config = get_default_general_config()
+    if general_config:
+        config.update(general_config)
 
     # Fusionar parámetros de usuario con los de por defecto
+    params = get_default_sma_parameters()
     if analysis_params:
-        default_params.update(analysis_params)
+        params.update(analysis_params)
 
-    params = default_params
+    # Función interna para imprimir mensajes si está habilitado
+    def log_message(message):
+        if config["show_prints"]:
+            print(message)
 
     # Procesar la imagen
     results, output_mask = process_single_image_171(input_image_path, params)
 
-    if results and output_mask is not None:
-        # Crear directorio de salida si no existe
-        os.makedirs(output_path, exist_ok=True)
+    # Si el procesamiento falla, `process_single_image_171` devuelve (None, None)
+    if not results or output_mask is None:
+        log_message(f"El análisis de {os.path.basename(input_image_path)} no pudo completarse.")
+        # Se devuelve None, None para indicar que el análisis de esta imagen ha fallado.
+        # El flujo de control principal puede entonces decidir si continuar con la siguiente imagen o detenerse.
+        return None, None
 
-        # Guardar la imagen de la máscara
+    # Crear directorio de salida si no existe
+    os.makedirs(output_path, exist_ok=True)
+
+    # Guardar la imagen de la máscara si está habilitado
+    if config["save_mask"]:
         filename, _ = os.path.splitext(os.path.basename(input_image_path))
         output_image_path = os.path.join(output_path, f"processed_mask_{filename}.png")
         cv2.imwrite(output_image_path, output_mask)
-        print(f"Máscara procesada guardada en: {output_image_path}")
+        log_message(f"Máscara procesada guardada en: {output_image_path}")
 
-        # Guardar resultados en CSV si se solicita
-        if csv_output:
-            results["image_name"] = os.path.basename(input_image_path)
-            output_csv_path = os.path.join(output_path, "resultados_171.csv")
+    # Guardar resultados en CSV si está habilitado
+    if config["save_csv"]:
+        results["image_name"] = os.path.basename(input_image_path)
+        output_csv_path = os.path.join(output_path, config["output_csv_name"])
 
-            # Escribir el archivo CSV
-            file_exists = os.path.isfile(output_csv_path)
-            with open(output_csv_path, 'a', newline='') as csvfile:
-                fieldnames = results.keys()
-                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        file_exists = os.path.isfile(output_csv_path)
+        with open(output_csv_path, 'a', newline='') as csvfile:
+            fieldnames = sorted(results.keys()) # Ordenar para consistencia
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
-                if not file_exists:
-                    writer.writeheader()
-                writer.writerow(results)
-            print(f"Resultados guardados en: {output_csv_path}")
+            if not file_exists:
+                writer.writeheader()
+            writer.writerow(results)
+        log_message(f"Resultados guardados en: {output_csv_path}")
 
-        return results, output_mask
-
-    return None, None
+    return results, output_mask
