@@ -219,7 +219,7 @@ def trace_line(image, start_x, y, direction, search_radius=2):
 _DEFAULT_ANALYSIS_PARAMS = {
     "cropping": "Automatic",  # 'Automatic' o 'Manual'
     "Osigma": "4",            # Sigma para el tensor de estructura
-    "Tsigma": 10,             # No utilizado activamente en el código de v1.7.1
+    "Tsigma": 8,             # No utilizado activamente en el código de v1.7.1, Usaron valor 10 pero recomiendan un Tsgima <8
     "extrapolate_from": "100%",# No utilizado activamente en el código de v1.7.1
     "ROIn": 3,                # No utilizado activamente en el código de v1.7.1
     "ROIwidth": 60,           # No utilizado activamente en el código de v1.7.1
