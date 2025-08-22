@@ -40,20 +40,76 @@ Este proyecto contiene dos versiones de la herramienta, organizadas en subdirect
 
 ## Uso
 
-Debe ejecutar cada versión desde su respectivo directorio.
+Cada versión se puede ejecutar de dos maneras: como un script principal que procesa un directorio de imágenes o como una biblioteca que puede importar en su propio código.
 
-**Para ejecutar la versión 2.3.3:**
+### Ejecución como Script
+
+Para procesar rápidamente un directorio de imágenes, puede ejecutar el script `main` de cada versión.
+
+**Para la versión 2.3.3:**
 ```bash
 cd SMA_python_233
 python main_233.py
 ```
 
-**Para ejecutar la versión 1.7.1:**
+**Para la versión 1.7.1:**
 ```bash
 cd SMA_python_171
 python main_171.py
 ```
-Ambos comandos abrirán una interfaz gráfica de usuario (GUI) específica para esa versión donde podrá configurar los parámetros del análisis.
+El script `main_171.py` ha sido actualizado para servir como un ejemplo claro de cómo usar la función `SMA` y sus configuraciones.
+
+### Uso como Biblioteca (v1.7.1)
+
+Puede importar la funcionalidad de SMA en sus propios scripts de Python para un control más granular. Esto es especialmente útil si desea integrar el análisis en un flujo de trabajo más grande.
+
+#### Funciones Principales
+
+-   `SMA(input_image_path, output_path, analysis_params, general_config)`: La función principal que ejecuta el análisis en una sola imagen.
+-   `get_default_sma_parameters()`: Devuelve un diccionario con los parámetros de análisis por defecto.
+-   `get_default_general_config()`: Devuelve un diccionario con las configuraciones generales por defecto (como guardar archivos o mostrar mensajes).
+
+#### Ejemplo de Uso
+
+A continuación, se muestra un ejemplo de cómo importar y utilizar la función `SMA`.
+
+```python
+from SMA_python_171.analysis_171 import (
+    SMA,
+    get_default_sma_parameters,
+    get_default_general_config
+)
+
+# 1. Cargar las configuraciones por defecto
+analysis_params = get_default_sma_parameters()
+general_config = get_default_general_config()
+
+# El usuario puede inspeccionar los parámetros por defecto
+print("Parámetros por defecto:", analysis_params)
+# En una variable X, se le asigne el diccionario por defecto
+X = analysis_params
+
+# 2. (Opcional) Personalizar las configuraciones
+analysis_params['Osigma'] = '5'  # Cambiar un parámetro de análisis
+general_config['save_csv'] = False  # No guardar el archivo CSV
+
+# 3. Definir rutas de entrada y salida
+input_image = 'ruta/a/su/imagen.png'
+output_dir = 'ruta/de/salida'
+
+# 4. Ejecutar el análisis
+results, mask = SMA(
+    input_image_path=input_image,
+    output_path=output_dir,
+    analysis_params=analysis_params,
+    general_config=general_config
+)
+
+if results:
+    print("Análisis completado:")
+    print(results)
+
+```
 
 ## Salida del Programa
 
