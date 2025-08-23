@@ -6,19 +6,19 @@ def main():
     Función principal para demostrar el uso de la función SMA, que ahora
     replica fielmente el flujo de trabajo del macro de Fiji.
     """
-    # --- Configuración de entrada y salida ---
-    # Directorio de imágenes de prueba
+    # --- Configuración de Rutas de Entrada y Salida ---
+    # Define el directorio donde se encuentran las imágenes a analizar.
     input_dir = "sma_python/GM_telemedLS_sample_A"
-    # Directorio de salida para los resultados
+    # Define el directorio donde se guardarán los resultados (imágenes procesadas y CSV).
     output_dir = "sma_python/output_faithful"
 
-    # Asegurarse de que el directorio de salida exista
+    # Crea el directorio de salida si no existe para evitar errores.
     os.makedirs(output_dir, exist_ok=True)
 
-    # --- Parámetros de análisis (opcional) ---
-    # Se puede pasar un diccionario vacío para usar todos los valores por defecto.
-    # O se puede especificar solo los parámetros a cambiar.
-    # Ejemplo: analysis_params = {"Tsigma": 8, "Osigma": "5"}
+    # --- Configuración de Parámetros de Análisis ---
+    # Para este script de demostración, se utilizan los parámetros por defecto.
+    # Para anular un parámetro, se pasaría un diccionario, por ejemplo:
+    # analysis_params = {"Tsigma": 8}
     analysis_params = {}
 
     print("Iniciando análisis con el pipeline fiel al macro de Fiji...")
@@ -26,7 +26,8 @@ def main():
     print(f"Directorio de salida: {output_dir}")
     print("-" * 50)
 
-    # --- Iterar sobre todas las imágenes del directorio ---
+    # --- Bucle Principal de Procesamiento ---
+    # Itera sobre cada archivo en el directorio de entrada.
     for filename in os.listdir(input_dir):
         if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.tif', '.bmp')):
             input_image_path = os.path.join(input_dir, filename)

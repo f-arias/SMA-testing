@@ -65,38 +65,46 @@ def process_single_image_171(image_path, params):
 
     # --- Inicio del Flujo de Procesamiento del Macro de Fiji ---
 
-    # 1. Recorte de la Imagen
+    # PASO 1: Recorte de la Imagen para aislar la región muscular.
     img_cropped = perform_cropping(img, params["cropping"])
 
-    # 2. Pre-procesamiento y Reducción de Ruido
-    # 2.1. Sustraer Fondo
+    # --- PASO 2: Pre-procesamiento y Reducción de Ruido ---
+    # 2.1. Sustraer Fondo: Corrige variaciones de brillo no uniformes en la imagen.
     kernel_bg = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (50, 50))
     background = cv2.morphologyEx(img_cropped, cv2.MORPH_OPEN, kernel_bg)
     img_no_bg = cv2.subtract(img_cropped, background)
 
-    # 2.2. Denoise (Non-local Means)
+    # 2.2. Denoise (Non-local Means): Filtro de reducción de ruido avanzado.
     img_denoised = cv2.fastNlMeansDenoising(img_no_bg, h=15)
 
-    # 2.3. Filtro Paso de Banda (Bandpass Filter)
+    # 2.3. Filtro Paso de Banda (Bandpass Filter): Elimina ruido de alta y baja frecuencia.
     img_bandpass = bandpass_filter(img_denoised, params['filter_small'], params['filter_large'])
 
-    # 2.4. Mejora de Contraste (CLAHE)
+    # 2.4. Mejora de Contraste (CLAHE): Realza el contraste localmente para destacar estructuras.
     clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(36,36))
     img_clahe = clahe.apply(img_bandpass)
 
-    # 3. Realce de Aponeurosis (Tubeness)
+    # PASO 3: Realce de Aponeurosis (Tubeness).
+    # Este es un paso CRÍTICO. El filtro Sato (Tubeness) está diseñado para realzar
+    # estructuras con forma de línea, como las aponeurosis. El parámetro 'Tsigma'
+    # controla la "escala" o grosor de las líneas a detectar.
     sigma_val = int(params.get("Tsigma", 10))
     if sigma_val == 0: sigma_val = 1
     img_tubeness = sato(img_clahe, sigmas=range(sigma_val, sigma_val + 1), black_ridges=False)
     img_tubeness = cv2.normalize(img_tubeness, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
 
-    # 4. Limpieza con FFT
+    # PASO 4: Limpieza con Transformada Rápida de Fourier (FFT).
+    # Se usa la FFT para aislar las señales más fuertes (las aponeurosis) y eliminar
+    # el ruido de fondo restante que el filtro Tubeness no eliminó.
     img_fft_filtered = fft_filter_and_threshold(img_tubeness, percentile=99.9)
 
-    # 5. Detección de Bordes (Canny)
+    # PASO 5: Detección de Bordes (Canny).
+    # Sobre la imagen ultra-filtrada, Canny detecta los bordes finos de las aponeurosis.
     edges = cv2.Canny(image=img_fft_filtered, threshold1=50, threshold2=150)
 
-    # Filtrar contornos para mantener solo los largos, que probablemente son aponeurosis
+    # PASO 6: Filtrado de Contornos y Trazado de Líneas.
+    # Se miden todos los bordes detectados y se descartan los que son demasiado cortos.
+    # Solo las líneas largas, que corresponden a las aponeurosis, son conservadas.
     WFoV = img_cropped.shape[1]
     minLength = 0.3 * WFoV
     contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
