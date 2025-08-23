@@ -1,3 +1,4 @@
+# Rama principal exactamente igual al repositorio SMA - Seynnes.
 # SMA (Simple Muscle Architecture Analysis)
 
 SMA is an ImageJ macro to automate the analysis of muscle architecture from B-mode ultrasound images. It was developed in collaboration with Dr. Neil Cronin, from the University of Jyväskylä.
