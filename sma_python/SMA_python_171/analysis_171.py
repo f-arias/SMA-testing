@@ -3,6 +3,23 @@ import cv2
 import csv
 import numpy as np
 from skimage.feature import structure_tensor
+from skimage.filters import sato
+
+def bandpass_filter(image, filter_small, filter_large):
+    """
+    Replica el filtro de paso de banda de ImageJ mediante la Diferencia de Gaussianas.
+    """
+    # Asegurarse de que los tamaños del kernel sean impares
+    k_small = int(2 * round(float(filter_small)) + 1)
+    k_large = int(2 * round(float(filter_large)) + 1)
+
+    img_blur_small = cv2.GaussianBlur(image, (k_small, k_small), filter_small)
+    img_blur_large = cv2.GaussianBlur(image, (k_large, k_large), filter_large)
+
+    # Diferencia de Gaussianas
+    img_dog = cv2.subtract(img_blur_small, img_blur_large)
+
+    return img_dog
 
 def fft_filter_and_threshold(image, percentile=99.9):
     """
@@ -37,8 +54,8 @@ def fft_filter_and_threshold(image, percentile=99.9):
 
 def process_single_image_171(image_path, params):
     """
-    Procesa una única imagen para el análisis de arquitectura muscular.
-    Esta función es el núcleo del análisis de la versión 1.7.1.
+    Procesa una única imagen para el análisis de arquitectura muscular,
+    siguiendo fielmente la secuencia de procesamiento del macro de Fiji.
     """
     # Cargar la imagen en escala de grises
     img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
@@ -46,25 +63,37 @@ def process_single_image_171(image_path, params):
         print(f"Error al leer la imagen: {image_path}")
         return None, None
 
-    # --- Pre-procesamiento de la imagen ---
-    # Recorte automático o manual de la imagen
+    # --- Inicio del Flujo de Procesamiento del Macro de Fiji ---
+
+    # 1. Recorte de la Imagen
     img_cropped = perform_cropping(img, params["cropping"])
 
-    # Eliminación del fondo y reducción de ruido
+    # 2. Pre-procesamiento y Reducción de Ruido
+    # 2.1. Sustraer Fondo
     kernel_bg = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (50, 50))
     background = cv2.morphologyEx(img_cropped, cv2.MORPH_OPEN, kernel_bg)
     img_no_bg = cv2.subtract(img_cropped, background)
+
+    # 2.2. Denoise (Non-local Means)
     img_denoised = cv2.fastNlMeansDenoising(img_no_bg, h=15)
 
-    # Mejora del contraste con CLAHE
+    # 2.3. Filtro Paso de Banda (Bandpass Filter)
+    img_bandpass = bandpass_filter(img_denoised, params['filter_small'], params['filter_large'])
+
+    # 2.4. Mejora de Contraste (CLAHE)
     clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(36,36))
-    img_clahe = clahe.apply(img_denoised)
+    img_clahe = clahe.apply(img_bandpass)
 
-    # --- Detección de Aponeurosis ---
-    # Filtrado en el dominio de la frecuencia (FFT) para resaltar estructuras lineales
-    img_fft_filtered = fft_filter_and_threshold(img_clahe, percentile=99.9)
+    # 3. Realce de Aponeurosis (Tubeness)
+    sigma_val = int(params.get("Tsigma", 10))
+    if sigma_val == 0: sigma_val = 1
+    img_tubeness = sato(img_clahe, sigmas=range(sigma_val, sigma_val + 1), black_ridges=False)
+    img_tubeness = cv2.normalize(img_tubeness, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
 
-    # Detección de bordes con Canny
+    # 4. Limpieza con FFT
+    img_fft_filtered = fft_filter_and_threshold(img_tubeness, percentile=99.9)
+
+    # 5. Detección de Bordes (Canny)
     edges = cv2.Canny(image=img_fft_filtered, threshold1=50, threshold2=150)
 
     # Filtrar contornos para mantener solo los largos, que probablemente son aponeurosis
@@ -213,81 +242,77 @@ def trace_line(image, start_x, y, direction, search_radius=2):
             break
     return path
 
-def SMA(input_image_path, output_path, analysis_params=None, csv_output=False, general_config=None):
+def SMA(input_image_path, output_path, analysis_params=None, csv_output=True):
     """
     Función principal para el análisis de arquitectura muscular (SMA).
 
-    Esta función toma una imagen de ultrasonido, realiza el análisis para detectar
-    las aponeurosis y calcula los parámetros de la arquitectura muscular.
+    Esta función es una implementación en Python que busca replicar fielmente
+    el flujo de trabajo de procesamiento del macro original de Fiji (SMA 1.7.1).
+    Aplica una secuencia de filtros (Paso de Banda, CLAHE, Tubeness, FFT) para
+    detectar las aponeurosis y calcular los parámetros de la arquitectura muscular.
 
     Args:
         input_image_path (str):
             Ruta de la imagen de ultrasonido a analizar.
         output_path (str):
-            Ruta del directorio donde se guardarán los resultados (imagen de máscara y archivo CSV).
+            Ruta del directorio donde se guardarán los resultados.
         analysis_params (dict, optional):
-            Diccionario con los parámetros para el análisis. Si no se proporciona,
-            se utilizarán los valores por defecto. Los parámetros posibles son:
-            - 'cropping': 'Automatic' o 'Manual'.
-            - 'Osigma': Valor de sigma para el tensor de estructura.
-            (y otros parámetros de la GUI que se podrían implementar en el futuro).
-            Defaults to None.
+            Diccionario para anular los parámetros de análisis por defecto.
+            Si es None, se utilizarán los valores por defecto.
         csv_output (bool, optional):
             Si es True, se guardará un archivo CSV con los resultados.
-            Defaults to False.
-        general_config (dict, optional):
-            Configuraciones generales. No implementado en esta versión.
+            Defaults to True.
 
     Returns:
         tuple:
-            - results (dict): Diccionario con los parámetros de arquitectura muscular calculados.
-            - output_mask (numpy.ndarray): Imagen de la máscara con las aponeurosis detectadas.
+            - results (dict): Diccionario con los parámetros calculados.
+            - output_mask (numpy.ndarray): Máscara con las aponeurosis detectadas.
+            Retorna (None, None) si el análisis falla.
     """
-    # Parámetros de análisis por defecto basados en la GUI
+    # Parámetros de análisis por defecto, replicando la GUI del macro 1.7.1.
+    # Nota: Algunos parámetros (extrapolate_from, ROIn, etc.) se incluyen por
+    # coherencia pero no son utilizados activamente, ya que la lógica de
+    # cálculo de ángulo y ROI fue simplificada en esta versión.
     default_params = {
         "cropping": "Automatic",
-        "Osigma": "4",
-        # Otros parámetros que podrían ser relevantes en el futuro
-        "Tsigma": 10,
-        "extrapolate_from": "100%",
-        "ROIn": 3,
-        "ROIwidth": 60,
-        "ROIheight": 90,
-        "autThresh": True,
-        "manThresh": 175,
-        "Pa": "max",
+        "Osigma": "4",            # Sigma para el tensor de estructura (fascículos)
+        "Tsigma": 10,             # Sigma para el filtro Tubeness (aponeurosis)
+        "filter_small": 3,        # Sigma pequeño para el filtro paso de banda
+        "filter_large": 40,       # Sigma grande para el filtro paso de banda
+        "extrapolate_from": "100%", # No utilizado activamente
+        "ROIn": 3,                # No utilizado activamente
+        "ROIwidth": 60,           # No utilizado activamente
+        "ROIheight": 90,          # No utilizado activamente
+        "autThresh": True,        # No utilizado activamente
+        "manThresh": 175,         # No utilizado activamente
+        "Pa": "max",              # No utilizado activamente
     }
 
     # Fusionar parámetros de usuario con los de por defecto
+    params = default_params.copy()
     if analysis_params:
-        default_params.update(analysis_params)
-
-    params = default_params
+        params.update(analysis_params)
 
     # Procesar la imagen
     results, output_mask = process_single_image_171(input_image_path, params)
 
     if results and output_mask is not None:
-        # Crear directorio de salida si no existe
         os.makedirs(output_path, exist_ok=True)
 
-        # Guardar la imagen de la máscara
         filename, _ = os.path.splitext(os.path.basename(input_image_path))
         output_image_path = os.path.join(output_path, f"processed_mask_{filename}.png")
         cv2.imwrite(output_image_path, output_mask)
         print(f"Máscara procesada guardada en: {output_image_path}")
 
-        # Guardar resultados en CSV si se solicita
         if csv_output:
             results["image_name"] = os.path.basename(input_image_path)
-            output_csv_path = os.path.join(output_path, "resultados_171.csv")
+            output_csv_path = os.path.join(output_path, "resultados_171_fiel.csv")
 
-            # Escribir el archivo CSV
             file_exists = os.path.isfile(output_csv_path)
             with open(output_csv_path, 'a', newline='') as csvfile:
-                fieldnames = results.keys()
+                # Ordenar claves para asegurar un orden consistente en el CSV
+                fieldnames = sorted(results.keys())
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
                 if not file_exists:
                     writer.writeheader()
                 writer.writerow(results)
@@ -295,4 +320,5 @@ def SMA(input_image_path, output_path, analysis_params=None, csv_output=False, g
 
         return results, output_mask
 
+    print(f"El análisis de {os.path.basename(input_image_path)} no pudo completarse.")
     return None, None
