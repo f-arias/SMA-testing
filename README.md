@@ -46,11 +46,11 @@ El análisis de las imágenes de ultrasonido para detectar la arquitectura muscu
 
 ## Configuración del Análisis
 
-Para mantener la fidelidad con el trabajo original, el script utiliza por defecto los **parámetros de análisis definidos por los autores** en la versión 1.7.1 del macro de Fiji. Esto asegura que los resultados sean comparables y que el pipeline funcione según fue diseñado originalmente. Los parámetros principales, como el sigma para el filtro Tubeness (`Tsigma`) o el sigma para la orientación de fascículos (`Osigma`), están preconfigurados en el script `analysis_171.py`.
+Para mantener la fidelidad con el trabajo original, el script utiliza por defecto los **parámetros de análisis definidos por los autores** en la versión 1.7.1 del macro de Fiji. Esto asegura que los resultados sean comparables y que el pipeline funcione según fue diseñado originalmente. Los parámetros principales, como el sigma para el filtro Tubeness (`Tsigma`) o el sigma para la orientación de fascículos (`Osigma`), están preconfigurados en el script `sma_python/SMA_python_171/analysis_171.py`.
 
 ## Testeo Intensivo del Sistema
 
-Para validar y optimizar la detección de aponeurosis, se ha desarrollado un script de testeo intensivo: `test_sma171.py`. Este script realiza dos pruebas sobre el conjunto de datos de ejemplo (`sma_python/GM_telemedLS_sample_A/`).
+Para validar y optimizar la detección de aponeurosis, se ha desarrollado un conjunto de scripts de testeo en la carpeta `sma_python/testing_SMA171/`. El script principal es `test_intensive_sma171.py`, que realiza dos pruebas sobre el conjunto de datos de ejemplo (`sma_python/GM_telemedLS_sample_A/`).
 
 ### 1. Test con Parámetros por Defecto
 
