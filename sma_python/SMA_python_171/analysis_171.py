@@ -7,27 +7,76 @@ from skimage.filters import sato
 
 def bandpass_filter(image, filter_small, filter_large):
     """
-    Replica el filtro de paso de banda de ImageJ mediante la Diferencia de Gaussianas.
+    Aplica un filtro de paso de banda utilizando una Diferencia de Gaussianas (DoG).
+
+    Este método simula el filtro de paso de banda de ImageJ, que es eficaz para
+    eliminar ruido de baja frecuencia (variaciones de fondo) y de alta frecuencia
+    (ruido fino), conservando las estructuras de interés en una banda de
+    frecuencia intermedia.
+
+    Args:
+        image (numpy.ndarray):
+            La imagen de entrada en escala de grises.
+        filter_small (float):
+            El sigma (desviación estándar) para el Gaussiano más pequeño. Este
+            valor controla la eliminación de las estructuras de alta frecuencia
+            (ruido más fino). Un valor más alto suaviza más.
+        filter_large (float):
+            El sigma para el Gaussiano más grande. Este valor controla la
+            eliminación de las estructuras de baja frecuencia (fondo). Un valor
+            más alto elimina variaciones de fondo más grandes.
+
+    Returns:
+        numpy.ndarray:
+            La imagen filtrada, resultado de la resta del Gaussiano grande al
+            Gaussiano pequeño.
     """
-    # Asegurarse de que los tamaños del kernel sean impares
+    # Asegurarse de que los tamaños del kernel sean impares, como requiere cv2.GaussianBlur
     k_small = int(2 * round(float(filter_small)) + 1)
     k_large = int(2 * round(float(filter_large)) + 1)
 
+    # Aplicar los dos desenfoques Gaussianos
     img_blur_small = cv2.GaussianBlur(image, (k_small, k_small), filter_small)
     img_blur_large = cv2.GaussianBlur(image, (k_large, k_large), filter_large)
 
-    # Diferencia de Gaussianas
+    # La Diferencia de Gaussianas es la resta de las dos imágenes desenfocadas
     img_dog = cv2.subtract(img_blur_small, img_blur_large)
 
     return img_dog
 
 def fft_filter_and_threshold(image, percentile=99.9):
     """
-    Realiza un filtrado y umbralización basado en FFT como en el macro.
+    Filtra una imagen en el dominio de la frecuencia usando la FFT y umbraliza el espectro.
+
+    Este proceso es clave para aislar las aponeurosis, que aparecen como señales
+    fuertes y orientadas en el espectro de frecuencia. Pasos:
+    1. Calcula la Transformada Rápida de Fourier (FFT) de la imagen.
+    2. Calcula el espectro de magnitud y lo umbraliza para conservar solo las
+       frecuencias más fuertes (las que superan un percentil alto).
+    3. Crea una máscara para eliminar las componentes de frecuencia débiles y
+       también un artefacto común en el centro del espectro (el componente DC).
+    4. Aplica la máscara y realiza la FFT inversa para reconstruir la imagen.
+    El resultado es una imagen donde solo las estructuras más dominantes y
+    periódicas (idealmente, las aponeurosis) permanecen.
+
+    Args:
+        image (numpy.ndarray):
+            La imagen de entrada en escala de grises.
+        percentile (float, optional):
+            El percentil utilizado para determinar el umbral en el espectro de
+            magnitud. Solo las frecuencias con una magnitud por encima de este
+            percentil se conservarán. Por defecto es 99.9.
+
+    Returns:
+        numpy.ndarray:
+            La imagen filtrada y normalizada a 8 bits (0-255). En esta imagen,
+            las aponeurosis deberían aparecer como líneas nítidas sobre un fondo
+            oscuro.
     """
+    # 1. Calcular la FFT y centrar el espectro
     fft_img = np.fft.fft2(image)
     fft_shifted = np.fft.fftshift(fft_img)
-    magnitude_spectrum = np.log(np.abs(fft_shifted) + 1)
+    magnitude_spectrum = np.log(np.abs(fft_shifted) + 1) # Usar escala logarítmica para visualización/análisis
 
     hist, bin_edges = np.histogram(magnitude_spectrum.ravel(), bins=256)
     cdf = np.cumsum(hist)
@@ -54,8 +103,38 @@ def fft_filter_and_threshold(image, percentile=99.9):
 
 def process_single_image_171(image_path, params):
     """
-    Procesa una única imagen para el análisis de arquitectura muscular,
-    siguiendo fielmente la secuencia de procesamiento del macro de Fiji.
+    Ejecuta el pipeline completo de análisis de arquitectura muscular en una sola imagen.
+
+    Esta función es el núcleo del análisis y sigue la secuencia de pasos del macro
+    original de Fiji para asegurar la consistencia de los resultados. Los pasos incluyen:
+    1. Carga y recorte de la imagen.
+    2. Pre-procesamiento: sustracción de fondo, reducción de ruido (NL-Means),
+       filtro paso de banda y mejora de contraste (CLAHE).
+    3. Realce de aponeurosis con el filtro Sato (Tubeness).
+    4. Limpieza final mediante filtrado en el dominio de la frecuencia (FFT).
+    5. Detección de bordes con Canny.
+    6. Filtrado de contornos para aislar las aponeurosis.
+    7. Trazado y ajuste de las líneas de las aponeurosis.
+    8. Cálculo de los parámetros de arquitectura: grosor, ángulo de penación (α),
+       ángulo de la aponeurosis (β) y longitud del fascículo.
+
+    Args:
+        image_path (str):
+            La ruta completa al archivo de imagen que se va a analizar.
+        params (dict):
+            Un diccionario que contiene todos los parámetros necesarios para el
+            análisis, como los sigmas para los filtros, el método de recorte, etc.
+
+    Returns:
+        tuple:
+            - results (dict or None): Un diccionario con los parámetros de
+              arquitectura calculados (grosor, ángulos, longitud del fascículo).
+              Es `None` si el análisis falla en un punto crítico.
+            - output_mask (numpy.ndarray or None): Una imagen binaria (máscara)
+              del mismo tamaño que la imagen recortada, mostrando las aponeurosis
+              detectadas. Es `None` si el análisis falla.
+            - detection_status (dict): Un diccionario que informa sobre el éxito
+              de la detección de las aponeurosis y la razón del fallo si ocurre.
     """
     detection_status = {
         "upper_found": False,
@@ -221,11 +300,43 @@ def process_single_image_171(image_path, params):
 # --- Funciones de ayuda duplicadas para que el script sea autocontenido ---
 
 def perform_cropping(image, cropping_type, manual_roi=None):
+    """
+    Recorta la imagen para aislar la región del músculo.
+
+    Puede operar de dos maneras:
+    1. "Automatic": Detecta el contorno más grande en la imagen (asumiendo que
+       es el transductor de ultrasonido o el músculo principal), calcula su
+       cuadro delimitador y lo recorta con un pequeño margen.
+    2. "Manual": En un entorno de GUI, usaría un ROI (Región de Interés)
+       definido por el usuario. En este script, este modo es un marcador de
+       posición y simplemente devuelve la imagen original.
+
+    Args:
+        image (numpy.ndarray):
+            La imagen de entrada en escala de grises.
+        cropping_type (str):
+            El método de recorte a utilizar, "Automatic" o "Manual".
+        manual_roi (tuple, optional):
+            Las coordenadas del ROI para el recorte manual, en formato (x, y, w, h).
+            No se utiliza actualmente en el modo no-GUI. Por defecto es None.
+
+    Returns:
+        numpy.ndarray:
+            La imagen recortada. Si el recorte automático falla o el modo es
+            manual (sin GUI), devuelve la imagen original.
+    """
     H, W = image.shape[:2]
     if cropping_type == "Manual":
-        # La lógica para obtener el ROI manual estaría en la GUI
-        return image # Placeholder
-    else:
+        # En un script sin GUI, el recorte manual no es directamente aplicable.
+        # Se podría pasar un ROI, pero por ahora, es un placeholder.
+        # Si se proporciona un manual_roi, se podría aplicar aquí.
+        if manual_roi:
+            x, y, w, h = manual_roi
+            return image[y:y+h, x:x+w]
+        return image # Devuelve la imagen original si no hay ROI.
+    else: # Recorte automático
+        # El recorte automático se basa en encontrar el contorno más grande.
+        # Funciona mejor con imágenes de 8 bits.
         if image.dtype != np.uint8:
             img_8bit = cv2.normalize(image, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
         else:
@@ -241,9 +352,44 @@ def perform_cropping(image, cropping_type, manual_roi=None):
         return image[Up:Up+height, Le:Le+width]
 
 def find_aponeurosis_line(binary_mask, search_from_top=True, search_height_ratio=0.5):
+    """
+    Encuentra la línea de una aponeurosis (superior o inferior) en una máscara binaria.
+
+    El proceso funciona de la siguiente manera:
+    1. Define una región de búsqueda vertical en el centro de la imagen. Para la
+       aponeurosis superior, busca en la mitad superior de la imagen; para la
+       inferior, en la mitad inferior.
+    2. Identifica todos los puntos de inicio potenciales (píxeles blancos) en
+       esa línea vertical central.
+    3. Para cada punto de inicio, intenta trazar una línea hacia la izquierda y
+       hacia la derecha.
+    4. La primera línea combinada (izquierda + centro + derecha) que sea lo
+       suficientemente larga (más del 30% del ancho de la imagen) se considera
+       la aponeurosis y se devuelve.
+
+    Args:
+        binary_mask (numpy.ndarray):
+            Una imagen binaria donde los contornos largos (potenciales aponeurosis)
+            son píxeles blancos.
+        search_from_top (bool, optional):
+            Si es `True`, busca la aponeurosis superior en la mitad superior de
+            la imagen. Si es `False`, busca la aponeurosis inferior en la mitad
+            inferior. Por defecto es `True`.
+        search_height_ratio (float, optional):
+            La proporción de la altura de la imagen a utilizar para la búsqueda
+            inicial. Por defecto es 0.5 (mitad superior o inferior).
+
+    Returns:
+        list of tuples or None:
+            Una lista de coordenadas (x, y) que representan la línea de la
+            aponeurosis encontrada. Devuelve `None` si no se encuentra una línea
+            que cumpla con el criterio de longitud.
+    """
     height, width = binary_mask.shape
     mid_x = width // 2
-    search_region_y = (0, int(height * search_height_ratio)) if search_from_top else (int(height * (1-search_height_ratio)), height)
+
+    # Definir la región de búsqueda (superior o inferior)
+    search_region_y = (0, int(height * search_height_ratio)) if search_from_top else (int(height * (1 - search_height_ratio)), height)
     vertical_profile = binary_mask[search_region_y[0]:search_region_y[1], mid_x]
     potential_starts_y_offset = np.where(vertical_profile > 0)[0]
     if not potential_starts_y_offset.any(): return None
@@ -260,9 +406,38 @@ def find_aponeurosis_line(binary_mask, search_from_top=True, search_height_ratio
     return best_line
 
 def trace_line(image, start_x, y, direction, search_radius=2):
+    """
+    Traza una línea de píxeles conectados desde un punto de inicio.
+
+    Avanza columna por columna (hacia la izquierda o derecha) desde un punto de
+    inicio (start_x, y). En cada columna, busca el siguiente píxel blanco en una
+    pequeña ventana vertical (definida por `search_radius`) centrada en la
+    posición y del píxel anterior. Este enfoque "voraz" permite seguir una línea
+    incluso si tiene pequeñas interrupciones o curvaturas.
+
+    Args:
+        image (numpy.ndarray):
+            La imagen binaria en la que se trazará la línea.
+        start_x (int):
+            La coordenada x desde la que comenzar el trazado.
+        y (int):
+            La coordenada y inicial del trazado.
+        direction (int):
+            La dirección del trazado: 1 para derecha, -1 para izquierda.
+        search_radius (int, optional):
+            El radio vertical (en píxeles) para buscar el siguiente punto de la
+            línea en la columna adyacente. Por defecto es 2.
+
+    Returns:
+        list of tuples:
+            Una lista de coordenadas (x, y) que forman la ruta trazada. La lista
+            estará vacía si no se puede encontrar ningún píxel inicial.
+    """
     path = []
     height, width = image.shape
     current_y = y
+
+    # Determinar el rango de x para el bucle según la dirección
     x_range = range(start_x, width) if direction == 1 else range(start_x, -1, -1)
     for x in x_range:
         y_min = max(0, current_y - search_radius)
