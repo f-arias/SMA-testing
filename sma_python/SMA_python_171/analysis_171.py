@@ -284,7 +284,24 @@ def SMA(input_image_path, output_path, analysis_params=None, csv_output=True):
     el flujo de trabajo de procesamiento del macro original de Fiji (SMA 1.7.1).
     Aplica una secuencia de filtros (Paso de Banda, CLAHE, Tubeness, FFT) para
     detectar las aponeurosis y calcular los parámetros de la arquitectura muscular.
+        Args:
+        input_image_path (str):
+            Ruta de la imagen de ultrasonido a analizar.
+        output_path (str):
+            Ruta del directorio donde se guardarán los resultados.
+        analysis_params (dict, optional):
+            Diccionario para anular los parámetros de análisis por defecto.
+            Si es None, se utilizarán los valores por defecto.
+        csv_output (bool, optional):
+            Si es True, se guardará un archivo CSV con los resultados.
+            Defaults to True.
+    Returns:
+        tuple:
+            - results (dict): Diccionario con los parámetros calculados.
+            - output_mask (numpy.ndarray): Máscara con las aponeurosis detectadas.
+            Retorna (None, None) si el análisis falla.
     """
+    # Parámetros de análisis por defecto, replicando la GUI del macro 1.7.1.
     default_params = {
         "cropping": "Automatic", "Osigma": "4", "Tsigma": 10,
         "filter_small": 3, "filter_large": 40, "extrapolate_from": "100%",
