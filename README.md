@@ -1,3 +1,4 @@
+# Version final de MACRO-SMA-PYTHON
 # SMA (Simple Muscle Architecture) - Versión en Python
 
 Este repositorio contiene una implementación en Python del macro de ImageJ **SMA (Simple Muscle Architecture)**, diseñado originalmente por O. R. Seynnes y N. J. Cronin. El objetivo principal de este proyecto es ofrecer una alternativa al macro de Fiji/ImageJ que pueda ser ejecutada en un entorno de Python estándar, facilitando la automatización y el análisis por lotes sin necesidad de una interfaz gráfica.
