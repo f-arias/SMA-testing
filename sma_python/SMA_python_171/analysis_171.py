@@ -57,11 +57,19 @@ def process_single_image_171(image_path, params):
     Procesa una única imagen para el análisis de arquitectura muscular,
     siguiendo fielmente la secuencia de procesamiento del macro de Fiji.
     """
+    detection_status = {
+        "upper_found": False,
+        "lower_found": False,
+        "both_found": False,
+        "failure_reason": "Analysis not started"
+    }
+
     # Cargar la imagen en escala de grises
     img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     if img is None:
         print(f"Error al leer la imagen: {image_path}")
-        return None, None
+        detection_status["failure_reason"] = "Error reading image"
+        return None, None, detection_status
 
     # --- Inicio del Flujo de Procesamiento del Macro de Fiji ---
 
@@ -113,20 +121,33 @@ def process_single_image_171(image_path, params):
 
     long_contours = [c for c in contours if cv2.arcLength(c, False) > minLength]
 
-    if len(long_contours) >= 2:
-        cv2.drawContours(mask_long_contours, long_contours, -1, 255, thickness=cv2.FILLED)
-    else:
-        print(f"No se encontraron suficientes contornos largos (se encontraron {len(long_contours)}).")
-        return None, None
+    if len(long_contours) < 2:
+        msg = f"No se encontraron suficientes contornos largos (se encontraron {len(long_contours)})."
+        print(msg)
+        detection_status["failure_reason"] = msg
+        return None, None, detection_status
+
+    cv2.drawContours(mask_long_contours, long_contours, -1, 255, thickness=cv2.FILLED)
 
     # Trazar las líneas de las aponeurosis superior e inferior
     upper_aponeurosis = find_aponeurosis_line(mask_long_contours, search_from_top=True)
     lower_aponeurosis = find_aponeurosis_line(mask_long_contours, search_from_top=False)
 
-    if not upper_aponeurosis or not lower_aponeurosis:
-        print("No se pudieron detectar ambas aponeurosis.")
-        return None, None
+    if upper_aponeurosis:
+        detection_status["upper_found"] = True
+    if lower_aponeurosis:
+        detection_status["lower_found"] = True
 
+    if not upper_aponeurosis or not lower_aponeurosis:
+        msg = "No se pudieron detectar ambas aponeurosis (superior: {}, inferior: {})".format(
+            "encontrada" if upper_aponeurosis else "no encontrada",
+            "encontrada" if lower_aponeurosis else "no encontrada"
+        )
+        print(msg)
+        detection_status["failure_reason"] = msg
+        return None, None, detection_status
+
+    detection_status["both_found"] = True
     upper_points = np.array(upper_aponeurosis)
     lower_points = np.array(lower_aponeurosis)
 
@@ -142,14 +163,18 @@ def process_single_image_171(image_path, params):
     x_max_roi = int(np.max(lower_points[:, 0]))
 
     if y_min_roi >= y_max_roi or x_min_roi >= x_max_roi:
-        print("ROI inválido, las aponeurosis podrían haberse cruzado.")
-        return None, None
+        msg = "ROI inválido, las aponeurosis podrían haberse cruzado."
+        print(msg)
+        detection_status["failure_reason"] = msg
+        return None, None, detection_status
 
     fascicle_roi = img_cropped[y_min_roi:y_max_roi, x_min_roi:x_max_roi]
 
     if fascicle_roi.size == 0:
-        print("El ROI para el análisis de fascículos está vacío.")
-        return None, None
+        msg = "El ROI para el análisis de fascículos está vacío."
+        print(msg)
+        detection_status["failure_reason"] = msg
+        return None, None, detection_status
 
     # Ángulo de los fascículos (alfa) usando el tensor de estructura
     sigma_orientation = float(params.get("Osigma", 4.0))
@@ -190,7 +215,8 @@ def process_single_image_171(image_path, params):
     cv2.polylines(output_mask, [upper_points.astype(np.int32)], isClosed=False, color=255, thickness=2)
     cv2.polylines(output_mask, [lower_points.astype(np.int32)], isClosed=False, color=255, thickness=2)
 
-    return results, output_mask
+    detection_status["failure_reason"] = "" # Success
+    return results, output_mask, detection_status
 
 # --- Funciones de ayuda duplicadas para que el script sea autocontenido ---
 
@@ -258,75 +284,44 @@ def SMA(input_image_path, output_path, analysis_params=None, csv_output=True):
     el flujo de trabajo de procesamiento del macro original de Fiji (SMA 1.7.1).
     Aplica una secuencia de filtros (Paso de Banda, CLAHE, Tubeness, FFT) para
     detectar las aponeurosis y calcular los parámetros de la arquitectura muscular.
-
-    Args:
-        input_image_path (str):
-            Ruta de la imagen de ultrasonido a analizar.
-        output_path (str):
-            Ruta del directorio donde se guardarán los resultados.
-        analysis_params (dict, optional):
-            Diccionario para anular los parámetros de análisis por defecto.
-            Si es None, se utilizarán los valores por defecto.
-        csv_output (bool, optional):
-            Si es True, se guardará un archivo CSV con los resultados.
-            Defaults to True.
-
-    Returns:
-        tuple:
-            - results (dict): Diccionario con los parámetros calculados.
-            - output_mask (numpy.ndarray): Máscara con las aponeurosis detectadas.
-            Retorna (None, None) si el análisis falla.
     """
-    # Parámetros de análisis por defecto, replicando la GUI del macro 1.7.1.
-    # Nota: Algunos parámetros (extrapolate_from, ROIn, etc.) se incluyen por
-    # coherencia pero no son utilizados activamente, ya que la lógica de
-    # cálculo de ángulo y ROI fue simplificada en esta versión.
     default_params = {
-        "cropping": "Automatic",
-        "Osigma": "4",            # Sigma para el tensor de estructura (fascículos)
-        "Tsigma": 10,             # Sigma para el filtro Tubeness (aponeurosis)
-        "filter_small": 3,        # Sigma pequeño para el filtro paso de banda
-        "filter_large": 40,       # Sigma grande para el filtro paso de banda
-        "extrapolate_from": "100%", # No utilizado activamente
-        "ROIn": 3,                # No utilizado activamente
-        "ROIwidth": 60,           # No utilizado activamente
-        "ROIheight": 90,          # No utilizado activamente
-        "autThresh": True,        # No utilizado activamente
-        "manThresh": 175,         # No utilizado activamente
-        "Pa": "max",              # No utilizado activamente
+        "cropping": "Automatic", "Osigma": "4", "Tsigma": 10,
+        "filter_small": 3, "filter_large": 40, "extrapolate_from": "100%",
+        "ROIn": 3, "ROIwidth": 60, "ROIheight": 90, "autThresh": True,
+        "manThresh": 175, "Pa": "max",
     }
 
-    # Fusionar parámetros de usuario con los de por defecto
     params = default_params.copy()
     if analysis_params:
         params.update(analysis_params)
 
     # Procesar la imagen
-    results, output_mask = process_single_image_171(input_image_path, params)
+    results, output_mask, detection_status = process_single_image_171(input_image_path, params)
 
+    # Si el análisis es exitoso, guardar la máscara y el CSV (si está habilitado)
     if results and output_mask is not None:
-        os.makedirs(output_path, exist_ok=True)
-
-        filename, _ = os.path.splitext(os.path.basename(input_image_path))
-        output_image_path = os.path.join(output_path, f"processed_mask_{filename}.png")
-        cv2.imwrite(output_image_path, output_mask)
-        print(f"Máscara procesada guardada en: {output_image_path}")
+        if os.path.isdir(output_path):
+            os.makedirs(output_path, exist_ok=True)
+            filename, _ = os.path.splitext(os.path.basename(input_image_path))
+            output_image_path = os.path.join(output_path, f"processed_mask_{filename}.png")
+            cv2.imwrite(output_image_path, output_mask)
+            # print(f"Máscara procesada guardada en: {output_image_path}")
 
         if csv_output:
             results["image_name"] = os.path.basename(input_image_path)
             output_csv_path = os.path.join(output_path, "resultados_171_fiel.csv")
-
             file_exists = os.path.isfile(output_csv_path)
             with open(output_csv_path, 'a', newline='') as csvfile:
-                # Ordenar claves para asegurar un orden consistente en el CSV
                 fieldnames = sorted(results.keys())
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 if not file_exists:
                     writer.writeheader()
                 writer.writerow(results)
-            print(f"Resultados guardados en: {output_csv_path}")
+            # print(f"Resultados guardados en: {output_csv_path}")
 
-        return results, output_mask
+        return results, output_mask, detection_status
 
-    print(f"El análisis de {os.path.basename(input_image_path)} no pudo completarse.")
-    return None, None
+    # Si el análisis falla, devuelve None y el estado de detección con el fallo
+    # print(f"El análisis de {os.path.basename(input_image_path)} no pudo completarse.")
+    return None, None, detection_status
