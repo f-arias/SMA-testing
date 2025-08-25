@@ -1,0 +1,361 @@
+image_path,tsigma,upper_detected,lower_detected,both_detected,failure_reason
+sma_python/GM_telemedLS_sample_A/GM_T_14.png,1,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_4.png,1,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_10.png,1,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_8.png,1,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_12.png,1,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_6.png,1,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_2.png,1,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_7.png,1,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_15.png,1,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_3.png,1,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_5.png,1,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_1.png,1,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_13.png,1,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_9.png,1,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_11.png,1,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_6.bmp,1,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_14.bmp,1,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_1.bmp,1,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_13.bmp,1,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_10.bmp,1,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_9.bmp,1,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_11.bmp,1,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_5.bmp,1,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_2.bmp,1,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_4.bmp,1,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_7.bmp,1,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_3.bmp,1,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_12.bmp,1,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_15.bmp,1,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_8.bmp,1,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_14.png,2,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_4.png,2,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_10.png,2,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_8.png,2,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_12.png,2,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_6.png,2,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_2.png,2,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_7.png,2,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_15.png,2,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_3.png,2,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_5.png,2,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_1.png,2,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_13.png,2,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_9.png,2,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_11.png,2,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_6.bmp,2,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_14.bmp,2,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_1.bmp,2,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_13.bmp,2,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_10.bmp,2,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_9.bmp,2,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_11.bmp,2,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_5.bmp,2,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_2.bmp,2,False,True,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: encontrada)"
+sma_python/GM_philips_sample_B/GM_P_4.bmp,2,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_7.bmp,2,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_3.bmp,2,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_12.bmp,2,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_15.bmp,2,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_8.bmp,2,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_14.png,3,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_4.png,3,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_10.png,3,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_8.png,3,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_12.png,3,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_6.png,3,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_2.png,3,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_7.png,3,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_15.png,3,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_3.png,3,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_5.png,3,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_1.png,3,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_13.png,3,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_9.png,3,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_11.png,3,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_6.bmp,3,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_14.bmp,3,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_1.bmp,3,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_13.bmp,3,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_10.bmp,3,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_9.bmp,3,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_11.bmp,3,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_5.bmp,3,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_2.bmp,3,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_4.bmp,3,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_7.bmp,3,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_3.bmp,3,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_12.bmp,3,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_15.bmp,3,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_8.bmp,3,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_14.png,4,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_4.png,4,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_10.png,4,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_8.png,4,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_12.png,4,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_6.png,4,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_2.png,4,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_7.png,4,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_15.png,4,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_3.png,4,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_5.png,4,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_1.png,4,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_13.png,4,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_9.png,4,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_11.png,4,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_6.bmp,4,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_14.bmp,4,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_1.bmp,4,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_13.bmp,4,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_10.bmp,4,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_9.bmp,4,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_11.bmp,4,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_5.bmp,4,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_2.bmp,4,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_4.bmp,4,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_7.bmp,4,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_3.bmp,4,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_12.bmp,4,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_15.bmp,4,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_8.bmp,4,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_14.png,5,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_4.png,5,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_10.png,5,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_8.png,5,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_12.png,5,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_6.png,5,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_2.png,5,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_7.png,5,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_15.png,5,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_3.png,5,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_5.png,5,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_1.png,5,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_13.png,5,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_9.png,5,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_11.png,5,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_6.bmp,5,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_14.bmp,5,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_1.bmp,5,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_13.bmp,5,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_10.bmp,5,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_9.bmp,5,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_11.bmp,5,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_5.bmp,5,False,True,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: encontrada)"
+sma_python/GM_philips_sample_B/GM_P_2.bmp,5,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_4.bmp,5,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_7.bmp,5,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_3.bmp,5,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_12.bmp,5,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_15.bmp,5,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_8.bmp,5,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_14.png,6,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_4.png,6,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_10.png,6,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_8.png,6,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_12.png,6,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_6.png,6,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_2.png,6,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_7.png,6,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_15.png,6,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_3.png,6,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_5.png,6,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_1.png,6,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_13.png,6,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_9.png,6,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_11.png,6,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_6.bmp,6,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_14.bmp,6,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_1.bmp,6,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_13.bmp,6,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_10.bmp,6,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_9.bmp,6,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_11.bmp,6,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_5.bmp,6,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_2.bmp,6,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_4.bmp,6,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_7.bmp,6,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_3.bmp,6,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_12.bmp,6,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_15.bmp,6,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_8.bmp,6,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_14.png,7,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_4.png,7,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_10.png,7,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_8.png,7,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_12.png,7,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_6.png,7,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_2.png,7,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_7.png,7,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_15.png,7,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_3.png,7,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_5.png,7,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_1.png,7,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_13.png,7,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_9.png,7,False,False,False,No se encontraron suficientes contornos largos (se encontraron 0).
+sma_python/GM_telemedLS_sample_A/GM_T_11.png,7,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_6.bmp,7,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_14.bmp,7,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_1.bmp,7,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_13.bmp,7,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_10.bmp,7,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_9.bmp,7,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_11.bmp,7,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_5.bmp,7,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_2.bmp,7,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_4.bmp,7,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_7.bmp,7,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_3.bmp,7,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_12.bmp,7,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_15.bmp,7,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_8.bmp,7,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_14.png,8,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_4.png,8,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_10.png,8,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_8.png,8,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_12.png,8,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_6.png,8,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_2.png,8,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_7.png,8,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_15.png,8,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_3.png,8,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_5.png,8,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_1.png,8,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_13.png,8,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_9.png,8,False,False,False,No se encontraron suficientes contornos largos (se encontraron 0).
+sma_python/GM_telemedLS_sample_A/GM_T_11.png,8,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_6.bmp,8,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_14.bmp,8,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_1.bmp,8,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_13.bmp,8,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_10.bmp,8,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_9.bmp,8,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_11.bmp,8,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_5.bmp,8,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_2.bmp,8,False,True,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: encontrada)"
+sma_python/GM_philips_sample_B/GM_P_4.bmp,8,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_7.bmp,8,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_3.bmp,8,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_12.bmp,8,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_15.bmp,8,False,True,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: encontrada)"
+sma_python/GM_philips_sample_B/GM_P_8.bmp,8,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_14.png,9,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_4.png,9,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_10.png,9,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_8.png,9,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_12.png,9,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_6.png,9,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_2.png,9,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_7.png,9,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_15.png,9,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_3.png,9,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_5.png,9,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_1.png,9,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_13.png,9,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_9.png,9,False,False,False,No se encontraron suficientes contornos largos (se encontraron 0).
+sma_python/GM_telemedLS_sample_A/GM_T_11.png,9,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_6.bmp,9,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_14.bmp,9,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_1.bmp,9,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_13.bmp,9,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_10.bmp,9,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_9.bmp,9,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_11.bmp,9,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_5.bmp,9,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_2.bmp,9,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_4.bmp,9,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_7.bmp,9,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_3.bmp,9,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_12.bmp,9,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_15.bmp,9,False,True,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: encontrada)"
+sma_python/GM_philips_sample_B/GM_P_8.bmp,9,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_14.png,10,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_4.png,10,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_10.png,10,False,False,False,No se encontraron suficientes contornos largos (se encontraron 0).
+sma_python/GM_telemedLS_sample_A/GM_T_8.png,10,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_12.png,10,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_6.png,10,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_2.png,10,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_7.png,10,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_15.png,10,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_3.png,10,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_5.png,10,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_1.png,10,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_13.png,10,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_9.png,10,False,False,False,No se encontraron suficientes contornos largos (se encontraron 0).
+sma_python/GM_telemedLS_sample_A/GM_T_11.png,10,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_6.bmp,10,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_14.bmp,10,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_1.bmp,10,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_13.bmp,10,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_10.bmp,10,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_9.bmp,10,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_11.bmp,10,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_5.bmp,10,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_2.bmp,10,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_4.bmp,10,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_7.bmp,10,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_3.bmp,10,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_12.bmp,10,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_15.bmp,10,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_8.bmp,10,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_14.png,11,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_4.png,11,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_10.png,11,False,False,False,No se encontraron suficientes contornos largos (se encontraron 0).
+sma_python/GM_telemedLS_sample_A/GM_T_8.png,11,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_12.png,11,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_6.png,11,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_2.png,11,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_7.png,11,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_15.png,11,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_3.png,11,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_5.png,11,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_1.png,11,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_13.png,11,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_9.png,11,False,False,False,No se encontraron suficientes contornos largos (se encontraron 0).
+sma_python/GM_telemedLS_sample_A/GM_T_11.png,11,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_6.bmp,11,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_14.bmp,11,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_1.bmp,11,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_13.bmp,11,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_10.bmp,11,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_9.bmp,11,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_11.bmp,11,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_5.bmp,11,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_2.bmp,11,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_4.bmp,11,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_7.bmp,11,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_3.bmp,11,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_12.bmp,11,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_15.bmp,11,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_8.bmp,11,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_14.png,12,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_4.png,12,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_10.png,12,False,False,False,No se encontraron suficientes contornos largos (se encontraron 0).
+sma_python/GM_telemedLS_sample_A/GM_T_8.png,12,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_12.png,12,True,True,True,
+sma_python/GM_telemedLS_sample_A/GM_T_6.png,12,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_2.png,12,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_7.png,12,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_15.png,12,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_3.png,12,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_5.png,12,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_telemedLS_sample_A/GM_T_1.png,12,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_13.png,12,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_telemedLS_sample_A/GM_T_9.png,12,False,False,False,No se encontraron suficientes contornos largos (se encontraron 0).
+sma_python/GM_telemedLS_sample_A/GM_T_11.png,12,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_6.bmp,12,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_14.bmp,12,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_1.bmp,12,False,True,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: encontrada)"
+sma_python/GM_philips_sample_B/GM_P_13.bmp,12,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_10.bmp,12,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_9.bmp,12,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_11.bmp,12,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_5.bmp,12,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_2.bmp,12,True,True,True,
+sma_python/GM_philips_sample_B/GM_P_4.bmp,12,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_7.bmp,12,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_3.bmp,12,True,True,True,"ROI inválido, las aponeurosis podrían haberse cruzado."
+sma_python/GM_philips_sample_B/GM_P_12.bmp,12,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_15.bmp,12,False,False,False,"No se pudieron detectar ambas aponeurosis (superior: no encontrada, inferior: no encontrada)"
+sma_python/GM_philips_sample_B/GM_P_8.bmp,12,True,False,False,"No se pudieron detectar ambas aponeurosis (superior: encontrada, inferior: no encontrada)"

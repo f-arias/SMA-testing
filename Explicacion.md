@@ -1,107 +1,121 @@
-# Explicación de la Función `SMA`
+# Explicación del Framework de Análisis y Testeo de SMA
 
-La función `SMA` es el componente central del proyecto de análisis de arquitectura muscular para la versión 1.7.1. Ha sido diseñada para simplificar el proceso de análisis, eliminando la necesidad de una interfaz gráfica y permitiendo su uso directo en scripts de Python.
+Este documento proporciona una explicación detallada de la función `SMA` y el conjunto de herramientas de testeo desarrolladas para analizar y validar el proceso de detección de la arquitectura muscular.
 
-## Descripción General
+## 1. La Función Principal `SMA`
 
-La función `SMA` toma la ruta de una imagen de ultrasonido de un músculo y realiza un análisis para detectar las aponeurosis (las membranas de tejido conectivo que recubren el músculo) y calcular una serie de parámetros clave de la arquitectura muscular.
+La función `SMA` es el componente central del proyecto. Ha sido diseñada para analizar una imagen de ultrasonido de un músculo, detectar sus aponeurosis y calcular parámetros clave de su arquitectura.
 
-El proceso incluye los siguientes pasos:
-1.  **Pre-procesamiento de la imagen:** Mejora de la calidad de la imagen para facilitar la detección de características.
-2.  **Detección de aponeurosis:** Identificación de las aponeurosis superior e inferior.
-3.  **Cálculo de parámetros:** Medición del grosor muscular, ángulo de penación, longitud de los fascículos, etc.
-4.  **Generación de resultados:** Guarda una imagen de máscara con las aponeurosis detectadas y, opcionalmente, un archivo CSV con los parámetros calculados.
-
-## Uso de la Función
-
-La función se encuentra en el módulo `analysis_171.py` y se puede importar y utilizar como se muestra a continuación.
+### Proceso de Análisis
+1.  **Pre-procesamiento:** Se aplican una serie de filtros para mejorar la calidad de la imagen y reducir el ruido.
+2.  **Detección de Aponeurosis:** Se utiliza un filtro de "tubeness" (controlado por `Tsigma`) para realzar las aponeurosis, seguido de un filtrado de contornos para aislarlas.
+3.  **Cálculo de Parámetros:** Si las aponeurosis se detectan correctamente, se miden el grosor muscular, el ángulo de penación, la longitud de los fascículos, etc.
+4.  **Generación de Resultados:** La función devuelve los resultados numéricos, una máscara de la detección y un estado detallado del proceso.
 
 ### Firma de la Función
 
+La función se encuentra en `sma_python/SMA_python_171/analysis_171.py`.
+
 ```python
-SMA(input_image_path, output_path, analysis_params=None, csv_output=False, general_config=None)
+SMA(input_image_path, output_path, analysis_params=None, csv_output=True)
 ```
 
 ### Argumentos de Entrada
 
-| Argumento | Tipo | Descripción | Obligatorio |
-|---|---|---|---|
-| `input_image_path` | `str` | Ruta completa de la imagen de ultrasonido que se va a analizar. | Sí |
-| `output_path` | `str` | Ruta del directorio donde se guardarán los archivos de salida (la máscara y el CSV). Si el directorio no existe, se creará. | Sí |
-| `analysis_params` | `dict` | Un diccionario opcional para especificar los parámetros de análisis. Si no se proporciona, se usarán los valores por defecto. | No |
-| `csv_output` | `bool` | Un booleano que, si se establece en `True`, guardará los resultados numéricos en un archivo CSV en el `output_path`. | No |
-| `general_config` | `dict` | Un diccionario para configuraciones generales. Actualmente no se utiliza en esta versión. | No |
+| Argumento | Tipo | Descripción |
+|---|---|---|
+| `input_image_path` | `str` | Ruta de la imagen de ultrasonido a analizar. |
+| `output_path` | `str` | Directorio donde se guardarán los archivos de salida. |
+| `analysis_params` | `dict` | (Opcional) Diccionario para anular los parámetros por defecto. |
+| `csv_output` | `bool` | (Opcional) Si es `True`, guarda un CSV con los resultados. |
 
 ### Parámetros de Análisis (`analysis_params`)
 
-El diccionario `analysis_params` permite ajustar el comportamiento del análisis. Los parámetros más importantes son:
-
--   `cropping` (str): Define el método de recorte de la imagen.
-    -   `"Automatic"` (por defecto): El sistema intenta encontrar el contorno del músculo y recorta la imagen automáticamente.
-    -   `"Manual"`: No realiza ningún recorte (útil si la imagen ya está preparada).
--   `Osigma` (str): El valor de "sigma" para el filtro del tensor de estructura, que se utiliza para determinar la orientación de los fascículos musculares. Un valor típico es `"4"`.
+-   `Tsigma` (int): **Parámetro crítico.** Define la "escala" o grosor de las aponeurosis que el filtro "tubeness" intentará detectar. El testeo intensivo ha demostrado que **`Tsigma = 2` es el valor óptimo** para el conjunto de imágenes de muestra.
+-   `Osigma` (str): Sigma para el tensor de estructura, usado para el análisis de orientación de los fascículos.
+-   `cropping` (str): `"Automatic"` (por defecto) o `"Manual"`.
 
 ### Valores de Retorno
 
-La función `SMA` devuelve una tupla con dos elementos:
+La función `SMA` devuelve una tupla con tres elementos:
 
-1.  **`results` (dict):** Un diccionario que contiene los parámetros de arquitectura muscular calculados. Las claves incluyen:
-    -   `thickness`: El grosor del músculo.
-    -   `pennation_angle`: El ángulo de penación.
-    -   `fascicle_length`: La longitud de los fascículos.
-    -   `fascicle_angle_alpha`: El ángulo de los fascículos (alfa).
-    -   `aponeurosis_angle_beta`: El ángulo de la aponeurosis (beta).
-2.  **`output_mask` (numpy.ndarray):** Una imagen (en formato de array de NumPy) que muestra las líneas de las aponeurosis detectadas sobre un fondo negro.
+1.  **`results` (dict):** Un diccionario con los parámetros de arquitectura muscular calculados (`thickness`, `pennation_angle`, etc.). Es `None` si el análisis falla.
+2.  **`output_mask` (numpy.ndarray):** Una imagen de máscara con las aponeurosis detectadas. Es `None` si el análisis falla.
+3.  **`detection_status` (dict):** Un diccionario con información detallada sobre el éxito del proceso de detección. Sus claves son:
+    -   `upper_found` (bool): `True` si se detectó la aponeurosis superficial.
+    -   `lower_found` (bool): `True` si se detectó la aponeurosis profunda.
+    -   `both_found` (bool): `True` si ambas se detectaron.
+    -   `failure_reason` (str): Un mensaje que describe la causa del fallo si el análisis no fue exitoso.
 
-Si el análisis falla (por ejemplo, si no se pueden detectar las aponeurosis), la función devolverá `(None, None)`.
-
-### Ejemplo de Uso
-
-El siguiente código muestra cómo llamar a la función `SMA` para analizar una imagen y procesar los resultados.
+### Ejemplo de Uso Actualizado
 
 ```python
 import os
 from sma_python.SMA_python_171.analysis_171 import SMA
 
-# --- 1. Configuración de rutas ---
-# Define la ruta de la imagen de entrada y el directorio de salida.
+# --- 1. Configuración ---
 input_image = "sma_python/GM_telemedLS_sample_A/GM_T_1.png"
 output_directory = "sma_python/output_results"
-
-# Crea el directorio de salida si no existe.
 os.makedirs(output_directory, exist_ok=True)
 
-
-# --- 2. (Opcional) Definir parámetros de análisis ---
-# Si quieres usar valores diferentes a los predeterminados.
-custom_params = {
-    "cropping": "Automatic",
-    "Osigma": "4"
-}
-
-
-# --- 3. Llamar a la función SMA ---
-# Se activa la opción de guardar el archivo CSV.
-results, mask = SMA(
+# --- 2. Llamar a la función SMA ---
+results, mask, status = SMA(
     input_image_path=input_image,
     output_path=output_directory,
-    analysis_params=custom_params,
+    analysis_params={"Tsigma": 2}, # Usar el valor óptimo
     csv_output=True
 )
 
-
-# --- 4. Procesar los resultados ---
-if results and mask is not None:
-    print("El análisis se ha completado con éxito.")
+# --- 3. Procesar los resultados ---
+if status["both_found"]:
+    print("Análisis completado con éxito.")
     print("\nResultados calculados:")
     for param, value in results.items():
-        print(f"- {param}: {value:.2f}")
-
-    # La máscara y el CSV ya han sido guardados por la función.
-    print(f"\nLa imagen de la máscara y el archivo CSV se han guardado en: {output_directory}")
+        if isinstance(value, float):
+            print(f"- {param}: {value:.2f}")
+        else:
+            print(f"- {param}: {value}")
 else:
-    print("El análisis no pudo completarse.")
+    print(f"El análisis falló. Razón: {status['failure_reason']}")
 
 ```
 
-Este ejemplo demuestra el flujo de trabajo completo: configurar las rutas, llamar a la función con parámetros personalizados y gestionar la salida.
+---
+
+## 2. Framework de Testeo y Análisis
+
+Para validar la función `SMA` y optimizar el parámetro `Tsigma`, se ha desarrollado un conjunto de scripts de Python.
+
+### `test_intensive_sma171.py`
+Este script realiza un testeo exhaustivo de la función `SMA`.
+-   Itera sobre todas las imágenes de los directorios de muestra.
+-   Prueba un rango de valores de `Tsigma` (de 1 a 12).
+-   Guarda los resultados detallados de cada ejecución en `Tsigma_test_results.csv`.
+
+**Para ejecutar el test:**
+```bash
+python3 test_intensive_sma171.py
+```
+
+### `analyze_results.py`
+Este script lee el archivo `Tsigma_test_results.csv` y realiza un análisis de rendimiento.
+-   Calcula la tasa de éxito para la detección de la aponeurosis superior, inferior y ambas, para cada valor de `Tsigma`.
+-   Imprime una tabla resumen en la consola.
+-   Genera un gráfico (`Tsigma_test_results.png`) que visualiza estos resultados e identifica el mejor `Tsigma`.
+
+**Para analizar los resultados del test:**
+```bash
+python3 analyze_results.py
+```
+
+### `summarize_failures.py`
+Este script proporciona un análisis más profundo de por qué fallan las detecciones.
+-   Analiza las razones de fallo para el valor de `Tsigma` más óptimo.
+-   Ofrece una explicación cualitativa de cómo los valores de `Tsigma` (bajos, medios y altos) afectan al proceso de detección.
+
+**Para obtener el resumen de fallos:**
+```bash
+python3 summarize_failures.py
+```
+
+Estos scripts juntos forman un framework robusto para la validación continua y la optimización de la función `SMA`.
