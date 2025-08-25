@@ -1,5 +1,5 @@
 # Version transcripta pero optimizada al MACRO SMA. No es exactamente igual al pipeline del MACRO SMA.
-----
+
 # SMA (Simple Muscle Architecture Analysis)
 
 SMA is an ImageJ macro to automate the analysis of muscle architecture from B-mode ultrasound images. It was developed in collaboration with Dr. Neil Cronin, from the University of Jyväskylä.
