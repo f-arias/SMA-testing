@@ -18,7 +18,7 @@ El análisis de las imágenes de ultrasonido para detectar la arquitectura muscu
    |
    V
 3. PRE-PROCESAMIENTO
-   - Sustraer Fondo (corrige brillo)
+   - Sustraer Fondo (corrige brillo y continua procesamiento la imagen FoV de interes)
    - Reducción de Ruido (Non-local Means)
    - Filtro Paso de Banda (elimina ruido de alta/baja frecuencia)
    - Mejora de Contraste (CLAHE)
