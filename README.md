@@ -14,7 +14,7 @@ El análisis de las imágenes de ultrasonido para detectar la arquitectura muscu
    |
    V
 2. RECORTE AUTOMÁTICO
-   (Se aísla la región del músculo del resto de la imagen)
+   (Se aísla el field of view (FoV) del músculo y resto de tejidos en la imagen, elimina contornos y metadata)
    |
    V
 3. PRE-PROCESAMIENTO
