@@ -75,4 +75,4 @@ El gráfico de resultados muestra claramente que el **valor óptimo para `Tsigma
 
 ### Instalacion y uso
 
-Leer el documento markdown 🗺️[*Instlacion*](sma_python/Instalacion y uso.md)
+Leer el documento markdown 🗺️[*Instlacion*](sma_python/Instalacion y uso.md](https://github.com/f-arias/SMA-testing/blob/94ee54158e50f15daba10e7e0cba728f84c22d76/sma_python/Instalacion%20y%20uso.md)
