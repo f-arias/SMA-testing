@@ -1,38 +1,3 @@
-# SMA - Análisis de Arquitectura Muscular Simple (Versión en Python)
-
-Este proyecto es una conversión a Python del macro de ImageJ "Simple Muscle Architecture (SMA)" original, desarrollado por O. R. Seynnes y N. J. Cronin. El objetivo de esta versión es proporcionar una herramienta equivalente que pueda ser ejecutada en un entorno de Python estándar, sin necesidad de ImageJ/Fiji.
-
-La referencia al trabajo original es:
-*Seynnes, O. R., & Cronin, N. J. (2020). Simple Muscle Architecture Analysis (SMA): An ImageJ macro tool to automate measurements in B-mode ultrasound scans. PloS One, 15(2), e0229034.*
-
-## Filosofía del Proyecto y Flujo de Procesamiento
-
-El módulo `SMA_python_171` busca ser una **transcripción lo más fiel posible** del flujo de trabajo de procesamiento de imágenes del macro original de Fiji (versión 1.7.1). El objetivo es replicar cada paso de filtrado en el mismo orden para validar la implementación en Python y comparar sus resultados con los del software original.
-
-A continuación se detalla el diagrama de flujo exacto que sigue el script para detectar las aponeurosis:
-
-1.  **Inicio: Recorte de la Imagen**
-    *   El proceso comienza con el recorte del campo de visión para aislar la región del músculo. Esto puede ser **manual** o **automático**.
-
-2.  **Paso 1: Pre-procesamiento y Reducción de Ruido**
-    *   `Subtract Background`: Se elimina el fondo no uniforme para corregir variaciones de brillo.
-    *   `Non-local Means Denoising`: Se aplica un filtro de reducción de ruido avanzado.
-    *   `Bandpass Filter`: Se utiliza un filtro de paso de banda (implementado como Diferencia de Gaussianas) para eliminar ruido de alta y baja frecuencia.
-    *   `Enhance Local Contrast (CLAHE)`: Se mejora el contraste localmente para realzar las estructuras de interés.
-
-3.  **Paso 2: Realce Específico de Aponeurosis (Tubeness)**
-    *   Se aplica un filtro **Sato** (equivalente a "Tubeness") para realzar específicamente las estructuras con forma de línea, como las aponeurosis.
-
-4.  **Paso 3: Limpieza mediante Filtrado de Frecuencia (FFT)**
-    *   Sobre la imagen ya procesada con el filtro de Tubeness, se aplica una **Transformada Rápida de Fourier (FFT)** para aislar las señales más fuertes y eliminar el ruido restante.
-
-5.  **Paso 4: Detección de Bordes**
-    *   Se utiliza el detector de bordes **Canny** sobre la imagen ultra-filtrada para obtener un mapa binario de los bordes de las aponeurosis.
-
-6.  **Paso 5: Filtrado y Trazado de Líneas**
-    *   Se miden todos los bordes detectados y se eliminan los que son demasiado cortos, quedándose únicamente con las líneas largas que representan las aponeurosis.
-    *   Finalmente, se trazan las coordenadas de las aponeurosis superior e inferior para su posterior análisis.
-
 ## Requisitos
 
 Para ejecutar este programa, necesita tener Python 3 instalado, así como las siguientes bibliotecas:
