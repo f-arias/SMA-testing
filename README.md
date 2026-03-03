@@ -72,3 +72,7 @@ La segunda prueba es un barrido del parámetro `Tsigma` desde 1 hasta 12. El obj
 ![Resultados del Barrido de Tsigma](Tsigma_test_results.png)
 
 El gráfico de resultados muestra claramente que el **valor óptimo para `Tsigma` es 2**, con el cual se logra el éxito en 10 de las 15 imágenes, mejorando drásticamente el rendimiento del sistema para este conjunto de datos.
+
+### Instalacion y uso
+
+Leer el documento markdown 🗺️[*Instlacion*](
